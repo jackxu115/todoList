@@ -111,6 +111,8 @@ const cbCreateTask = event => {
     const eleHigh = document.createElement('option')
     const eleMed = document.createElement('option')
     const eleLow = document.createElement('option')
+    const eleAddBtn = document.createElement('button')
+    const eleCancelBtn = document.createElement('button')
 
     eleTaskInfo.classList.add('taskForm')
     eleTitleLabel.classList.add('taskFormTitleLabel')
@@ -124,6 +126,8 @@ const cbCreateTask = event => {
     eleHigh.classList.add('taskFormOptionHigh')
     eleMed.classList.add('taskFormOptionMedium')
     eleLow.classList.add('taskFormOptionLow')
+    eleAddBtn.classList.add('taskFormAddBtn')
+    eleCancelBtn.classList.add('taskFormCancelBtn')
 
     eleTitleLabel.textContent = 'Name'
     eleDesLabel.textContent = 'Description'
@@ -132,6 +136,8 @@ const cbCreateTask = event => {
     eleHigh.textContent = 'High'
     eleMed.textContent = 'Medium'
     eleLow.textContent = 'Low'
+    eleAddBtn.textContent = 'Add'
+    eleCancelBtn.textContent = 'Cancel'
 
     eleDueDateInput.setAttribute('type', 'date')
 
@@ -146,6 +152,9 @@ const cbCreateTask = event => {
     elePrioritySelection.appendChild(eleMed)
     elePrioritySelection.appendChild(eleLow)
     eleTaskInfo.appendChild(elePrioritySelection)
+    eleTaskInfo.appendChild(eleAddBtn)
+    eleTaskInfo.appendChild(eleCancelBtn)
+
     tags.eleTaskList.appendChild(eleTaskInfo)
 
     console.log(event.target.dataset)

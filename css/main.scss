@@ -86,7 +86,7 @@ header {
       .taskForm {
         position: absolute;
         display: grid;
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         grid-template-columns: repeat(4, 1fr);
         background: #3f72af;
         border-radius: 5px;
@@ -101,6 +101,46 @@ header {
         .taskFormTitleInput, .taskFormDesInput, .taskFormDueDateInput, .taskFormPrioritySelection {
           margin: 10px;
         }
+        
+        .taskFormAddBtn {
+          grid-row-start: 3;
+          grid-row-end: 4;
+          grid-column-start: 1;
+          grid-column-end: 3;
+          margin: 10px 140px;
+          border-radius: 3px;
+        }
+
+        .taskFormCancelBtn {
+          grid-row-start: 3;
+          grid-row-end: 4;
+          grid-column-start: 3;
+          grid-column-end: 5;
+          margin: 10px 140px;
+          border-radius: 3px;
+        }
+
+        .taskFormAddBtn:hover, .taskFormCancelBtn:hover {
+          cursor: pointer;
+          background-color: #ffde7d;
+          color: #fefefe;
+          transition: all ease-in-out 0.3s;
+        }
+
+        .taskFormAddBtn:active, .taskFormCancelBtn:active {
+          transform: scale(0.9);
+          transition: all ease-in-out 0.3s;
+        }
+
+
+
+        //.button:hover {
+        //  cursor: pointer;
+        //  background-color: #ffde7d;
+        //  color: #fefefe;
+        //  transition: all ease-in-out 0.3s;
+        //}
+
       }
     }
     .addTask {
