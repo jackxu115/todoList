@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  background: #303841;
+  color: #eeeeee;
+}
+
+header {
+  max-width: 800px;
+  margin: auto;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-size: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 65vh;
+
+  .navbar {
+    background-color: #00adb5;
+    color: #eeeeee;
+    margin: 0;
+    padding: 20px;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+
+    .project {
+
+      .projectList {
+        .projectItem {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0;
+          padding: 0;
+          .projectName {
+            font-weight: bold;
+            font-style: italic;
+            margin: 5px;
+            padding: 0;
+
+          }
+
+          .projectDeleteBtn {
+            //margin: 20px 0;
+
+          }
+        }
+      }
+
+      .newProject {
+
+        .newProjectInput {
+          width: 100%;
+          border-radius: 5px;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .content {
+    background-color: #eeeeee;
+    color: #393e46;
+    width: 85%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 6fr 1fr;
+
+    .heading {
+      padding: 20px;
+    }
+
+    .taskList {
+      padding: 20px;
+      //background: #e60012;
+      .taskForm {
+        position: absolute;
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        background: #3f72af;
+        border-radius: 5px;
+
+        .taskFormTitleLabel, .taskFormDesLabel, .taskFormDueDateLabel, .taskFormPriorityLabel {
+          margin: 10px;
+          color: #303841;
+          font-weight: 600;
+          color: #f7f7f7;
+        }
+
+        .taskFormTitleInput, .taskFormDesInput, .taskFormDueDateInput, .taskFormPrioritySelection {
+          margin: 10px;
+        }
+      }
+    }
+    .addTask {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin: 10px;
+
+      .addTaskBtn {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+

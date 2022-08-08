@@ -1,3 +1,95 @@
+body {
+  margin: 0;
+  background: #303841;
+  color: #eeeeee;
+}
 
+header {
+  max-width: 800px;
+  margin: auto;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header h1 {
+  font-size: 40px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 65vh;
+}
+.container .navbar {
+  background-color: #00adb5;
+  color: #eeeeee;
+  margin: 0;
+  padding: 20px;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+}
+.container .navbar .project .projectList .projectItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.container .navbar .project .projectList .projectItem .projectName {
+  font-weight: bold;
+  font-style: italic;
+  margin: 5px;
+  padding: 0;
+}
+.container .navbar .project .newProject .newProjectInput {
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+.container .content {
+  background-color: #eeeeee;
+  color: #393e46;
+  width: 85%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 2fr 6fr 1fr;
+}
+.container .content .heading {
+  padding: 20px;
+}
+.container .content .taskList {
+  padding: 20px;
+}
+.container .content .taskList .taskForm {
+  position: absolute;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  background: #3f72af;
+  border-radius: 5px;
+}
+.container .content .taskList .taskForm .taskFormTitleLabel, .container .content .taskList .taskForm .taskFormDesLabel, .container .content .taskList .taskForm .taskFormDueDateLabel, .container .content .taskList .taskForm .taskFormPriorityLabel {
+  margin: 10px;
+  color: #303841;
+  font-weight: 600;
+  color: #f7f7f7;
+}
+.container .content .taskList .taskForm .taskFormTitleInput, .container .content .taskList .taskForm .taskFormDesInput, .container .content .taskList .taskForm .taskFormDueDateInput, .container .content .taskList .taskForm .taskFormPrioritySelection {
+  margin: 10px;
+}
+.container .content .addTask {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 10px;
+}
+.container .content .addTask .addTaskBtn {
+  margin-right: 20px;
+}
 
 /*# sourceMappingURL=main.css.map */
