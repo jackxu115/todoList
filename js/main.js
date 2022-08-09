@@ -36,28 +36,34 @@ const task = (title, des, dueDate, priority, taskId) => {
 }
 
 // save data into localstorage
-const saveData = data => {
+const saveProject = data => {
     let dataString = JSON.stringify(data)
-    if (localStorage.getItem('saveData') === null) {
-        localStorage.setItem('saveData', dataString)
-    } else {
-        localStorage.clear()
-        localStorage.setItem('saveData', dataString)
-        displayProjects(projectList)
-    }
+    localStorage.setItem('saveProject', dataString)
 }
 
 // get data from localstorage
 const getData = () => {
-    if (localStorage.getItem('saveData') === null) {
+    if (localStorage.getItem('saveProject') === null) {
+        console.log('no localstorage data')
         const Project = project('Todos', 0)
         projectList.push(Project)
+        saveProject(projectList)
+        localStorage.setItem('projectId', '1')
+        localStorage.setItem('taskId', '0')
     } else {
-        let dataArray = localStorage.getItem('saveData')
+        console.log('has localstorage data')
+        let dataArray = localStorage.getItem('saveProject')
+        let dataProjectId = localStorage.getItem('projectId')
+        let dataTaskId = localStorage.getItem('taskId')
         projectList = JSON.parse(dataArray)
-
+        data.projectId = parseInt(dataProjectId)
+        data.taskId = parseInt(dataTaskId)
+        displayProjects(projectList)
+        cbTodoList(projectList[0])
+        console.log(projectList)
+        console.log(typeof data.projectId)
+        console.log(typeof data.taskId)
     }
-
 }
 
 // new project form ask user to create new project
@@ -110,6 +116,8 @@ const cbAddProject = event => {
         tags.eleProject.removeChild(tags.eleNewProject)
         data.projectName = null
         data.projectId++
+        saveProject(projectList)
+        localStorage.setItem('projectId', `${data.projectId}`)
     }
 }
 
@@ -183,7 +191,8 @@ const cbAddTask = event => {
         data.taskDueDate = null
         data.taskPriority = 'Medium'
         data.taskId++
-
+        saveProject(projectList)
+        localStorage.setItem('taskId', `${data.taskId}`)
         const taskForm = document.querySelector('.taskForm')
         tags.eleTaskList.removeChild(taskForm)
     }
@@ -332,12 +341,13 @@ const cbChangeTask = event => {
                         task.title = data.taskTitle
                         task.des = data.taskDes
                         task.dueDate = data.taskDueDate
-                        debugger
                         task.priority = data.taskPriority
                     }
                 })
             }
         })
+
+        saveProject(projectList)
 
         const eleTaskTitle = document.querySelector(`#taskItemTitle${data.currentTaskId}`)
         const eleTaskDueDate = document.querySelector(`#taskItemDueDate${data.currentTaskId}`)
@@ -355,9 +365,7 @@ const cbChangeTask = event => {
         tags.eleTaskList.removeChild(taskForm)
     }
 
-
     console.log('after change task', projectList)
-
 }
 
 // display the task content in the task form
@@ -566,8 +574,5 @@ const displayProjects = projectsData => {
     })
 }
 
-const Project = project('Todos', 0)
-projectList.push(Project)
-
-
 appendDOM()
+getData()
