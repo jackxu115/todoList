@@ -11,6 +11,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+
   h1 {
     font-size: 40px;
     font-weight: 600;
@@ -41,6 +42,7 @@ header {
     .project {
 
       .projectList {
+
         .projectItem {
           display: flex;
           flex-direction: row;
@@ -48,12 +50,14 @@ header {
           align-items: center;
           margin: 0;
           padding: 0;
+
           .projectName {
             font-weight: bold;
             font-style: italic;
             margin: 5px;
             padding: 0;
           }
+
           .projectName:hover {
             cursor: pointer;
           }
@@ -71,6 +75,43 @@ header {
           width: 100%;
           border-radius: 5px;
           margin-bottom: 5px;
+        }
+
+        .newProjectAddBtn, .newProjectCancelBtn {
+          border-radius: 5px;
+          margin: 3px;
+        }
+
+        .newProjectAddBtn:hover, .newProjectCancelBtn:hover {
+          cursor: pointer;
+          background-color: #ffde7d;
+          color: #fefefe;
+          transition: all ease-in-out 0.3s;
+        }
+
+        .newProjectAddBtn:active, .newProjectCancelBtn:active {
+          transform: scale(0.9);
+          transition: all ease-in-out 0.3s;
+        }
+
+      }
+
+      .addProject {
+
+        .addProjectBtn {
+          border-radius: 5px;
+        }
+
+        .addProjectBtn:hover {
+          cursor: pointer;
+          background-color: #ffde7d;
+          color: #fefefe;
+          transition: all ease-in-out 0.3s;
+        }
+
+        .addProjectBtn:active {
+          transform: scale(0.9);
+          transition: all ease-in-out 0.3s;
         }
       }
     }
@@ -156,7 +197,7 @@ header {
         .taskFormTitleInput, .taskFormDesInput, .taskFormDueDateInput, .taskFormPrioritySelection {
           margin: 10px;
         }
-        
+
         .taskFormAddBtn {
           grid-row-start: 3;
           grid-row-end: 4;
@@ -188,7 +229,6 @@ header {
         }
 
 
-
         //.button:hover {
         //  cursor: pointer;
         //  background-color: #ffde7d;
@@ -198,6 +238,7 @@ header {
 
       }
     }
+
     .addTask {
       display: flex;
       flex-direction: row;
@@ -206,6 +247,19 @@ header {
 
       .addTaskBtn {
         margin-right: 20px;
+        border-radius: 5px;
+      }
+
+      .addTaskBtn:hover {
+        cursor: pointer;
+        background-color: #ffde7d;
+        color: #fefefe;
+        transition: all ease-in-out 0.3s;
+      }
+
+      .addTaskBtn:active {
+        transform: scale(0.9);
+        transition: all ease-in-out 0.3s;
       }
     }
   }

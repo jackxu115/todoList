@@ -23,17 +23,44 @@ const data = {
 
 let projectList = []
 
+// create new project object
 const project = (name, id) => {
     const tasks = []
     return {name, id, tasks}
 }
 
+// create new task object
 const task = (title, des, dueDate, priority, taskId) => {
     let status = 'open'
     return {title, des, dueDate, priority, taskId, status}
 }
 
+// save data into localstorage
+const saveData = data => {
+    let dataString = JSON.stringify(data)
+    if (localStorage.getItem('saveData') === null) {
+        localStorage.setItem('saveData', dataString)
+    } else {
+        localStorage.clear()
+        localStorage.setItem('saveData', dataString)
+        displayProjects(projectList)
+    }
+}
 
+// get data from localstorage
+const getData = () => {
+    if (localStorage.getItem('saveData') === null) {
+        const Project = project('Todos', 0)
+        projectList.push(Project)
+    } else {
+        let dataArray = localStorage.getItem('saveData')
+        projectList = JSON.parse(dataArray)
+
+    }
+
+}
+
+// new project form ask user to create new project
 const newProject = () => {
     const eleNewProject = document.createElement('div')
     const eleInput = document.createElement('input')
@@ -61,11 +88,12 @@ const newProject = () => {
 
 }
 
+// call back function get project name via user input
 const cbInputProject = event => {
     data.projectName = event.target.value
 }
 
-
+// call back function when user click add button to create new project
 const cbAddProject = event => {
     if (data.projectName === null) {
         const input = document.querySelector('.newProjectInput')
@@ -85,12 +113,14 @@ const cbAddProject = event => {
     }
 }
 
+// call back function when user click cancel button to discard new project creation
 const cbCancelProject = event => {
     console.log('cancel new project')
     tags.eleProject.appendChild(tags.eleAddProject)
     tags.eleProject.removeChild(tags.eleNewProject)
 }
 
+// call back function when user click add project button from project navbar
 const cbCreateProject = event => {
     console.log('add project')
     tags.eleProject.appendChild(newProject())
@@ -98,6 +128,7 @@ const cbCreateProject = event => {
     // tags.eleAddProject.setAttribute('style', 'visibility: hidden')
 }
 
+// call back function when user click delete project button from project navbar
 const cbDeleteProject = event => {
     const index = parseInt(event.target.id.substring(3))
     projectList = projectList.filter(element => element.id !== index)
@@ -107,22 +138,27 @@ const cbDeleteProject = event => {
     console.log(projectList)
 }
 
+// call back function to get task name via user input
 const cbTaskTitle = event => {
     data.taskTitle = event.target.value
 }
 
+// call back function to get task description via user input
 const cbTaskDes = event => {
     data.taskDes = event.target.value
 }
 
+// call back function to get task due date via user input
 const cbTaskDueDate = event => {
     data.taskDueDate = event.target.value
 }
 
+// call back function to get task priority via user input
 const cbTaskPriority = event => {
     data.taskPriority = event.target.value
 }
 
+// call back function to creat a task when user click add button
 const cbAddTask = event => {
     if (data.taskTitle === null) {
         const taskTitle = document.querySelector('.taskFormTitleInput')
@@ -154,12 +190,13 @@ const cbAddTask = event => {
     console.log('projectList', projectList)
 }
 
+// call back function to cancel task creation when user click cancel button
 const cbCancelTask = event => {
     const taskForm = document.querySelector('.taskForm')
     tags.eleTaskList.removeChild(taskForm)
 }
 
-
+// call back function when user click add button to start create a new task
 const cbCreateTask = event => {
     // event.target.dataset.projectId = data.currentProjectId
 
@@ -232,6 +269,7 @@ const cbCreateTask = event => {
     // console.log(event.target.dataset)
 }
 
+// call back function to display tasks under the project when click on the task item
 const cbShowProject = event => {
     data.currentProjectId = parseInt(event.target.id.substring(11))
     const found = projectList.find(element => element.id === data.currentProjectId)
@@ -240,11 +278,13 @@ const cbShowProject = event => {
     displayProjectContent(found)
 }
 
+// call back function to display the tasks under the todolist when user click on the todos item
 const cbTodoList = event => {
     data.currentProjectId = 0
     displayProjectContent(projectList[0])
 }
 
+// call back function to delete the task when user click the del button on the task
 const cbDeleteTask = event => {
     const index = parseInt(event.target.id.substring(3))
     console.log('delete', index)
@@ -258,6 +298,7 @@ const cbDeleteTask = event => {
     tags.eleTaskList.removeChild(deleteTask)
 }
 
+// call back function to start edit the task when user click on the task's name
 const cbEditTask = event => {
     console.log('edit', event.target.parentNode)
     cbCreateTask()
@@ -272,6 +313,7 @@ const cbEditTask = event => {
     displayTaskContent(foundTask)
 }
 
+// call back function to confirm change the task content when user click on the change button
 const cbChangeTask = event => {
     console.log('change', event.target)
     console.log('task info', data.taskTitle, data.taskDes, data.taskDueDate, data.taskPriority, data.currentTaskId)
@@ -318,6 +360,7 @@ const cbChangeTask = event => {
 
 }
 
+// display the task content in the task form
 const displayTaskContent = taskObj => {
     const eleTaskTitle = document.querySelector('.taskFormTitleInput')
     const eleTaskDes = document.querySelector('.taskFormDesInput')
@@ -336,7 +379,7 @@ const displayTaskContent = taskObj => {
     eleChangeBtn.addEventListener('click', cbChangeTask)
 }
 
-
+// display the project content include a task list
 const displayProjectContent = projectObj => {
     tags.eleContentHeading.textContent = projectObj.name
     tags.eleTaskList.replaceChildren()
@@ -351,6 +394,7 @@ const displayProjectContent = projectObj => {
     }
 }
 
+// display the task item in the task list
 const createNewTask = (taskTitle, taskDueDate, taskId, taskPriority) => {
     const eleTask = document.createElement('div')
     const eleTaskTitle = document.createElement('p')
@@ -386,6 +430,7 @@ const createNewTask = (taskTitle, taskDueDate, taskId, taskPriority) => {
 
 }
 
+// create new the project under the project list
 const createNewProject = (projectName, id) => {
     const eleProject = document.createElement('div')
     const eleProjectName = document.createElement('p')
@@ -408,10 +453,9 @@ const createNewProject = (projectName, id) => {
     eleProject.appendChild(eleDeleteProject)
 
     return eleProject
-
 }
 
-
+// header of the website
 const createHeader = () => {
     const eleHeader = document.createElement('header')
     const eleHeading = document.createElement('h1')
@@ -420,6 +464,7 @@ const createHeader = () => {
     return eleHeader
 }
 
+// display the todos content
 const createTodo = () => {
     const eleTodo = document.createElement('div')
     const eleTodoHeading = document.createElement('h2')
@@ -435,6 +480,7 @@ const createTodo = () => {
     return eleTodo
 }
 
+// display the project content
 const createProject = () => {
     const eleHeading = document.createElement('h2')
     const eleAddProjectBtn = document.createElement('button')
@@ -457,7 +503,7 @@ const createProject = () => {
     return tags.eleProject
 }
 
-
+// display the navbar of the container
 const createNavbar = () => {
     const eleNavbar = document.createElement('div')
     eleNavbar.classList.add('navbar')
@@ -467,6 +513,7 @@ const createNavbar = () => {
     return eleNavbar
 }
 
+// display the content of the container
 const createContent = () => {
     const eleContent = document.createElement('div')
     const eleHeading = document.createElement('div')
@@ -493,6 +540,7 @@ const createContent = () => {
     return eleContent
 }
 
+// display container of the website
 const createContainer = () => {
     const eleContainer = document.createElement('div')
     eleContainer.classList.add('container')
@@ -502,13 +550,24 @@ const createContainer = () => {
     return eleContainer
 }
 
-
+// append header and container into html body
 const appendDOM = () => {
     eleBody.appendChild(createHeader())
     eleBody.appendChild(createContainer())
 }
 
+// display the projects under project list from the data from the localstorage
+const displayProjects = projectsData => {
+    const projects = projectsData.filter(project => project.id !== 0)
+
+    projects.forEach(project => {
+        let newProject = createNewProject(project.name, project.id)
+        tags.eleProjectList.appendChild(newProject)
+    })
+}
 
 const Project = project('Todos', 0)
 projectList.push(Project)
+
+
 appendDOM()

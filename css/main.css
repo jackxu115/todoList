@@ -57,6 +57,33 @@ header h1 {
   border-radius: 5px;
   margin-bottom: 5px;
 }
+.container .navbar .project .newProject .newProjectAddBtn, .container .navbar .project .newProject .newProjectCancelBtn {
+  border-radius: 5px;
+  margin: 3px;
+}
+.container .navbar .project .newProject .newProjectAddBtn:hover, .container .navbar .project .newProject .newProjectCancelBtn:hover {
+  cursor: pointer;
+  background-color: #ffde7d;
+  color: #fefefe;
+  transition: all ease-in-out 0.3s;
+}
+.container .navbar .project .newProject .newProjectAddBtn:active, .container .navbar .project .newProject .newProjectCancelBtn:active {
+  transform: scale(0.9);
+  transition: all ease-in-out 0.3s;
+}
+.container .navbar .project .addProject .addProjectBtn {
+  border-radius: 5px;
+}
+.container .navbar .project .addProject .addProjectBtn:hover {
+  cursor: pointer;
+  background-color: #ffde7d;
+  color: #fefefe;
+  transition: all ease-in-out 0.3s;
+}
+.container .navbar .project .addProject .addProjectBtn:active {
+  transform: scale(0.9);
+  transition: all ease-in-out 0.3s;
+}
 .container .content {
   background-color: #eeeeee;
   color: #393e46;
@@ -159,6 +186,17 @@ header h1 {
 }
 .container .content .addTask .addTaskBtn {
   margin-right: 20px;
+  border-radius: 5px;
+}
+.container .content .addTask .addTaskBtn:hover {
+  cursor: pointer;
+  background-color: #ffde7d;
+  color: #fefefe;
+  transition: all ease-in-out 0.3s;
+}
+.container .content .addTask .addTaskBtn:active {
+  transform: scale(0.9);
+  transition: all ease-in-out 0.3s;
 }
 
 /*# sourceMappingURL=main.css.map */
