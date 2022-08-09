@@ -32,6 +32,12 @@ header {
     display: flex;
     flex-direction: column;
 
+    .todo {
+      .todoHeading:hover {
+        cursor: pointer;
+      }
+    }
+
     .project {
 
       .projectList {
@@ -47,7 +53,9 @@ header {
             font-style: italic;
             margin: 5px;
             padding: 0;
-
+          }
+          .projectName:hover {
+            cursor: pointer;
           }
 
           .projectDeleteBtn {
@@ -83,8 +91,55 @@ header {
     .taskList {
       padding: 20px;
       //background: #e60012;
+      position: relative;
+
+      .taskItem {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 4fr 2fr 1fr 1fr;
+        background: #7dce13;
+        border-radius: 5px;
+        margin: 5px;
+        color: #f7f7f7;
+        border-left: 10px solid #e60012;
+        align-items: center;
+
+        .taskItemTitle, .taskItemDueDate, .taskItemPriority, .taskItemDelBtn {
+          margin: 5px 20px;
+        }
+
+        .taskItemDelBtn {
+          border-radius: 5px;
+        }
+
+        .taskItemTitle:hover {
+          cursor: pointer;
+        }
+
+        .taskItemTitle:active {
+          background-color: #ffde7d;
+          color: #fefefe;
+          transition: all ease-in-out 0.3s;
+        }
+
+        .taskItemDelBtn:hover {
+          cursor: pointer;
+          background-color: #ffde7d;
+          color: #fefefe;
+          transition: all ease-in-out 0.3s;
+        }
+
+        .taskItemDelBtn:active {
+          transform: scale(0.9);
+          transition: all ease-in-out 0.3s;
+        }
+
+      }
+
+
       .taskForm {
         position: absolute;
+        top: 0;
         display: grid;
         grid-template-rows: repeat(3, 1fr);
         grid-template-columns: repeat(4, 1fr);

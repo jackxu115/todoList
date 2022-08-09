@@ -2,7 +2,6 @@ const eleBody = document.body
 
 const tags = {
     eleProjectList: document.createElement('div'),
-    eleNoteList: document.createElement('div'),
     eleContentHeading: document.createElement('h2'),
     eleTaskList: document.createElement('div'),
     eleAddProject: document.createElement('div'),
@@ -12,19 +11,31 @@ const tags = {
 
 const data = {
     projectName: null,
-    projectId: 0
+    projectId: 1,
+    taskTitle: null,
+    taskDes: null,
+    taskDueDate: null,
+    taskPriority: 'Medium',
+    taskId: 0,
+    currentProjectId: 0,
+    currentTaskId: 0
 }
 
 let projectList = []
 
 const project = (name, id) => {
-    const task = []
-    return {name, id, task}
+    const tasks = []
+    return {name, id, tasks}
+}
+
+const task = (title, des, dueDate, priority, taskId) => {
+    let status = 'open'
+    return {title, des, dueDate, priority, taskId, status}
 }
 
 
 const newProject = () => {
-    const eleNewProject= document.createElement('div')
+    const eleNewProject = document.createElement('div')
     const eleInput = document.createElement('input')
     const addBtn = document.createElement('button')
     const cancelBtn = document.createElement('button')
@@ -88,7 +99,7 @@ const cbCreateProject = event => {
 }
 
 const cbDeleteProject = event => {
-    const index = parseInt(event.target.id.charAt(3))
+    const index = parseInt(event.target.id.substring(3))
     projectList = projectList.filter(element => element.id !== index)
     const deleteProjectId = `projectItem${index}`
     const deleteProject = document.querySelector(`#${deleteProjectId}`)
@@ -96,8 +107,61 @@ const cbDeleteProject = event => {
     console.log(projectList)
 }
 
+const cbTaskTitle = event => {
+    data.taskTitle = event.target.value
+}
+
+const cbTaskDes = event => {
+    data.taskDes = event.target.value
+}
+
+const cbTaskDueDate = event => {
+    data.taskDueDate = event.target.value
+}
+
+const cbTaskPriority = event => {
+    data.taskPriority = event.target.value
+}
+
+const cbAddTask = event => {
+    if (data.taskTitle === null) {
+        const taskTitle = document.querySelector('.taskFormTitleInput')
+        taskTitle.setAttribute('style', 'border: 2px red solid')
+    } else if (data.taskDueDate === null) {
+        const taskDueDate = document.querySelector('.taskFormDueDateInput')
+        taskDueDate.setAttribute('style', 'border: 2px red solid')
+    } else {
+        const Task = task(data.taskTitle, data.taskDes, data.taskDueDate, data.taskPriority, data.taskId)
+        console.log(Task)
+        projectList.forEach(element => {
+            if (element.id === data.currentProjectId) {
+                element.tasks.push(Task)
+            }
+        })
+
+        const newTask = createNewTask(data.taskTitle, data.taskDueDate, data.taskId, data.taskPriority)
+        tags.eleTaskList.appendChild(newTask)
+
+        data.taskTitle = null
+        data.taskDes = null
+        data.taskDueDate = null
+        data.taskPriority = 'Medium'
+        data.taskId++
+
+        const taskForm = document.querySelector('.taskForm')
+        tags.eleTaskList.removeChild(taskForm)
+    }
+    console.log('projectList', projectList)
+}
+
+const cbCancelTask = event => {
+    const taskForm = document.querySelector('.taskForm')
+    tags.eleTaskList.removeChild(taskForm)
+}
+
+
 const cbCreateTask = event => {
-    event.target.dataset.projectId = data.projectId
+    // event.target.dataset.projectId = data.currentProjectId
 
     const eleTaskInfo = document.createElement('div')
     const eleTitleLabel = document.createElement('label')
@@ -141,6 +205,13 @@ const cbCreateTask = event => {
 
     eleDueDateInput.setAttribute('type', 'date')
 
+    eleTitleInput.addEventListener('input', cbTaskTitle)
+    eleDesInput.addEventListener('input', cbTaskDes)
+    eleDueDateInput.addEventListener('input', cbTaskDueDate)
+    elePrioritySelection.addEventListener('change', cbTaskPriority)
+    eleAddBtn.addEventListener('click', cbAddTask)
+    eleCancelBtn.addEventListener('click', cbCancelTask)
+
     eleTaskInfo.appendChild(eleTitleLabel)
     eleTaskInfo.appendChild(eleTitleInput)
     eleTaskInfo.appendChild(eleDesLabel)
@@ -155,9 +226,163 @@ const cbCreateTask = event => {
     eleTaskInfo.appendChild(eleAddBtn)
     eleTaskInfo.appendChild(eleCancelBtn)
 
-    tags.eleTaskList.appendChild(eleTaskInfo)
+    elePrioritySelection.selectedIndex = 1
 
-    console.log(event.target.dataset)
+    tags.eleTaskList.appendChild(eleTaskInfo)
+    // console.log(event.target.dataset)
+}
+
+const cbShowProject = event => {
+    data.currentProjectId = parseInt(event.target.id.substring(11))
+    const found = projectList.find(element => element.id === data.currentProjectId)
+    console.log('show project', data.currentProjectId)
+    console.log('found project', found)
+    displayProjectContent(found)
+}
+
+const cbTodoList = event => {
+    data.currentProjectId = 0
+    displayProjectContent(projectList[0])
+}
+
+const cbDeleteTask = event => {
+    const index = parseInt(event.target.id.substring(3))
+    console.log('delete', index)
+    projectList.forEach(project => {
+        if (project.id === data.currentProjectId) {
+            project.tasks = project.tasks.filter(task => task.taskId !== index)
+        }
+    })
+    const deleteTaskId = event.target.parentNode.id
+    const deleteTask = document.querySelector(`#${deleteTaskId}`)
+    tags.eleTaskList.removeChild(deleteTask)
+}
+
+const cbEditTask = event => {
+    console.log('edit', event.target.parentNode)
+    cbCreateTask()
+    data.currentTaskId = parseInt(event.target.parentNode.id.substring(4))
+    const foundProject = projectList.find(project => project.id === data.currentProjectId)
+    const foundTask = foundProject.tasks.find(task => task.taskId === data.currentTaskId)
+    console.log('found task', foundTask)
+    data.taskTitle = foundTask.title
+    data.taskDes = foundTask.des
+    data.taskDueDate = foundTask.dueDate
+    data.taskPriority = foundTask.priority
+    displayTaskContent(foundTask)
+}
+
+const cbChangeTask = event => {
+    console.log('change', event.target)
+    console.log('task info', data.taskTitle, data.taskDes, data.taskDueDate, data.taskPriority, data.currentTaskId)
+
+    if (data.taskTitle === "") {
+        const taskTitle = document.querySelector('.taskFormTitleInput')
+        taskTitle.setAttribute('style', 'border: 2px red solid')
+    } else if (data.taskDueDate === "") {
+        const taskDueDate = document.querySelector('.taskFormDueDateInput')
+        taskDueDate.setAttribute('style', 'border: 2px red solid')
+    } else {
+        projectList.forEach(project => {
+            if (project.id === data.currentProjectId) {
+                project.tasks.forEach(task => {
+                    if (task.taskId === data.currentTaskId) {
+                        task.title = data.taskTitle
+                        task.des = data.taskDes
+                        task.dueDate = data.taskDueDate
+                        debugger
+                        task.priority = data.taskPriority
+                    }
+                })
+            }
+        })
+
+        const eleTaskTitle = document.querySelector(`#taskItemTitle${data.currentTaskId}`)
+        const eleTaskDueDate = document.querySelector(`#taskItemDueDate${data.currentTaskId}`)
+        const elePriority = document.querySelector(`#taskItemPriority${data.currentTaskId}`)
+
+        eleTaskTitle.textContent = data.taskTitle
+        eleTaskDueDate.textContent = data.taskDueDate
+        elePriority.textContent = data.taskPriority
+
+        data.taskTitle = null
+        data.taskDes = null
+        data.taskDueDate = null
+        data.taskPriority = 'Medium'
+        const taskForm = document.querySelector('.taskForm')
+        tags.eleTaskList.removeChild(taskForm)
+    }
+
+
+    console.log('after change task', projectList)
+
+}
+
+const displayTaskContent = taskObj => {
+    const eleTaskTitle = document.querySelector('.taskFormTitleInput')
+    const eleTaskDes = document.querySelector('.taskFormDesInput')
+    const eleTaskDueDate = document.querySelector('.taskFormDueDateInput')
+    const eleTaskPriority = document.querySelector('.taskFormPrioritySelection')
+    const eleChangeBtn = document.querySelector('.taskFormAddBtn')
+
+    debugger
+    eleTaskTitle.value = taskObj.title
+    eleTaskDes.value = (taskObj.des === null) ? "" : taskObj.des
+    eleTaskDueDate.value = taskObj.dueDate
+
+    eleTaskPriority.value = taskObj.priority
+    eleChangeBtn.textContent = 'Change'
+    eleChangeBtn.removeEventListener('click', cbAddTask)
+    eleChangeBtn.addEventListener('click', cbChangeTask)
+}
+
+
+const displayProjectContent = projectObj => {
+    tags.eleContentHeading.textContent = projectObj.name
+    tags.eleTaskList.replaceChildren()
+
+    if (projectObj.tasks.length > 0) {
+        projectObj.tasks.forEach(element => {
+            console.log(element)
+            const Task = createNewTask(element.title, element.dueDate, element.taskId, element.priority)
+            console.log('Task', Task)
+            tags.eleTaskList.appendChild(Task)
+        })
+    }
+}
+
+const createNewTask = (taskTitle, taskDueDate, taskId, taskPriority) => {
+    const eleTask = document.createElement('div')
+    const eleTaskTitle = document.createElement('p')
+    const eleTaskDueDate = document.createElement('p')
+    const elePriority = document.createElement('p')
+    const eleDelete = document.createElement('button')
+
+    eleTask.classList.add('taskItem')
+    eleTaskTitle.classList.add('taskItemTitle')
+    eleTaskDueDate.classList.add('taskItemDueDate')
+    elePriority.classList.add('taskItemPriority')
+    eleDelete.classList.add('taskItemDelBtn')
+    eleTask.setAttribute('id', `task${taskId}`)
+    eleDelete.setAttribute('id', `del${taskId}`)
+    eleTaskTitle.setAttribute('id', `taskItemTitle${taskId}`)
+    eleTaskDueDate.setAttribute('id', `taskItemDueDate${taskId}`)
+    elePriority.setAttribute('id', `taskItemPriority${taskId}`)
+
+    eleTaskTitle.textContent = taskTitle
+    eleTaskDueDate.textContent = taskDueDate
+    elePriority.textContent = taskPriority
+    eleDelete.textContent = 'Del'
+
+    eleDelete.addEventListener('click', cbDeleteTask)
+    eleTaskTitle.addEventListener('click', cbEditTask)
+
+    eleTask.appendChild(eleTaskTitle)
+    eleTask.appendChild(eleTaskDueDate)
+    eleTask.appendChild(elePriority)
+    eleTask.appendChild(eleDelete)
+
+    return eleTask
 
 }
 
@@ -172,11 +397,12 @@ const createNewProject = (projectName, id) => {
 
     eleProjectName.textContent = projectName
     eleProject.setAttribute('id', `projectItem${id}`)
-    eleProjectName.setAttribute('id', `${projectName}${id}`)
+    eleProjectName.setAttribute('id', `projectName${id}`)
     eleDeleteProject.setAttribute('id', `del${id}`)
     eleDeleteProject.textContent = 'Del'
 
     eleDeleteProject.addEventListener('click', cbDeleteProject)
+    eleProjectName.addEventListener('click', cbShowProject)
 
     eleProject.appendChild(eleProjectName)
     eleProject.appendChild(eleDeleteProject)
@@ -200,6 +426,8 @@ const createTodo = () => {
 
     eleTodo.classList.add('todo')
     eleTodoHeading.classList.add('todoHeading')
+
+    eleTodoHeading.addEventListener('click', cbTodoList)
 
     eleTodoHeading.textContent = 'Todos'
     eleTodo.appendChild(eleTodoHeading)
@@ -281,6 +509,6 @@ const appendDOM = () => {
 }
 
 
-const Project = project('todo', 0)
+const Project = project('Todos', 0)
 projectList.push(Project)
 appendDOM()
